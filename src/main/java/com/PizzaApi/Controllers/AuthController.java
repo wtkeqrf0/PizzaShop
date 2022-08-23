@@ -43,12 +43,16 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequestDTO request) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));
-            User user=userService.findUser(request.getEmail());
-            Map<Object,Object> response=new HashMap<>();
-            response.put("token",jwtTokenProvider.createToken(request.getEmail(),user.getRole().name()));
-            response.put("id",user.getId());
-            response.put("email",user.getEmail());
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            User user = userService.findUser(request.getEmail());
+
+            Map<Object, Object> response = new HashMap<>();
+
+            response.put("token", jwtTokenProvider.createToken(request.getEmail(), user.getRole().name()));
+            response.put("id", user.getId());
+            response.put("email", user.getEmail());
+
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
@@ -60,28 +64,35 @@ public class AuthController {
         try {
             userService.findUser(request.getEmail());
             return ResponseEntity.badRequest().body("User already exists");
+
         } catch (UsernameNotFoundException e) {
-            User user=new User();
+            User user = new User();
             user.setEmail(request.getEmail());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
+
             if (request.getCode().isEmpty()) user.setRole(Role.USER);
-            else user.setRole(passwordEncoder.matches(request.getCode(),mainCode)?Role.ADMIN:Role.USER);
+
+            else user.setRole(passwordEncoder.matches(request.getCode(), mainCode) ? Role.ADMIN : Role.USER);
+
             user.setStatus(Status.ACTIVE);
             userService.saveUser(user);
+
             return ResponseEntity.ok("Регистрация прошла успешно");
         }
     }
 
     @PostMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        SecurityContextLogoutHandler securityContextLogoutHandler=new SecurityContextLogoutHandler();
-        securityContextLogoutHandler.logout(request,response,null);
+
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        securityContextLogoutHandler.logout(request, response, null);
     }
 
     @GetMapping("/pizzas")
     public ResponseEntity<?> showMenu() {
         try {
             return ResponseEntity.ok(pizzaService.getPizzas());
+
         } catch (ChangeSetPersister.NotFoundException e) {
             return ResponseEntity.badRequest().body("Menu doesn't exist");
         }

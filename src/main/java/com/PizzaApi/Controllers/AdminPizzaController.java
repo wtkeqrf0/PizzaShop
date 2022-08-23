@@ -2,7 +2,6 @@ package com.PizzaApi.Controllers;
 
 import com.PizzaApi.Entities.Pizza;
 import com.PizzaApi.servises.PizzaService;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +15,8 @@ public class AdminPizzaController {
 
     @PostMapping
     public ResponseEntity<?> addPizza(@RequestBody Pizza pizza) {
-        try {
-            if (pizzaService.findPizza(pizza.getTitle()).equals(pizza)) throw new ChangeSetPersister.NotFoundException();
-            return ResponseEntity.badRequest().body("Pizza already exists");
-        } catch (ChangeSetPersister.NotFoundException e) {
-            pizzaService.savePizza(pizza);
-            return ResponseEntity.ok("Saved");
-        }
+        return pizzaService.savePizza(pizza) ? ResponseEntity.ok("Saved") :
+                ResponseEntity.badRequest().body("Insufficient data OR pizza already exists");
     }
 
     @DeleteMapping("/{id}")

@@ -1,8 +1,8 @@
 package com.PizzaApi.models;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class AuthenticationRequestDTO {
  private String email, password, code;
 }

@@ -22,6 +22,7 @@ public class AdminUserController {
     public ResponseEntity<?> getUser(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(userService.findUser(id));
+
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.badRequest().body("User not found");
         }
@@ -32,6 +33,7 @@ public class AdminUserController {
         try {
             userService.Ban(id);
             return ResponseEntity.ok("Saved");
+
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.badRequest().body("User not found");
         }
@@ -42,6 +44,7 @@ public class AdminUserController {
         try {
             userService.unBan(id);
             return ResponseEntity.ok("Saved");
+
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.badRequest().body("User not found");
         }

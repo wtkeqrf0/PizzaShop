@@ -2,9 +2,12 @@ package com.PizzaApi.repos;
 
 import com.PizzaApi.Entities.Pizza;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface PizzaRepo extends JpaRepository<Pizza,Long> {
-    Optional<Pizza> findByTitle(String title);
+    @Query(value = "SELECT * FROM menu WHERE menu.title= :title ;", nativeQuery = true)
+    List<Pizza> findAllByTitle(@Param("title") String title);
 }

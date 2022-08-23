@@ -13,11 +13,11 @@ public interface UserRepo extends JpaRepository<User,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE users SET status='BANNED' WHERE id= :user_id ;",nativeQuery = true)
+    @Query(value = "UPDATE users SET status='BANNED' WHERE id= :user_id ;", nativeQuery = true)
     void setBanned(Long user_id);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE users SET status='ACTIVE' WHERE id= :user_id ;",nativeQuery = true)
+    @Query(value = "UPDATE users SET status='ACTIVE' WHERE id= :user_id ;", nativeQuery = true)
     void setActive(Long user_id);
 }

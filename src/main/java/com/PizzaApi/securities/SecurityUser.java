@@ -1,7 +1,7 @@
 package com.PizzaApi.securities;
 
-import com.PizzaApi.Enums.Status;
 import com.PizzaApi.Entities.User;
+import com.PizzaApi.Enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
