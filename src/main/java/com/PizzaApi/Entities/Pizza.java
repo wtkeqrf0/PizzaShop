@@ -3,8 +3,10 @@ package com.PizzaApi.Entities;
 import com.PizzaApi.Enums.Dough;
 import com.PizzaApi.Enums.Size;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -33,12 +35,16 @@ public class Pizza {
     @Column(nullable = false, length = 15)
     private Dough dough;
 
+    @Column(updatable = false)
+    @CreationTimestamp
+    private LocalDateTime created_on;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pizza pizza = (Pizza) o;
-        return Objects.equals(title,pizza.title) &&
+        return Objects.equals(title, pizza.title) &&
                 Objects.equals(price, pizza.price) &&
                 size == pizza.size && dough == pizza.dough;
     }

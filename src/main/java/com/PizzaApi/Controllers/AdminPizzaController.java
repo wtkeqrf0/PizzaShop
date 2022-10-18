@@ -2,12 +2,13 @@ package com.PizzaApi.Controllers;
 
 import com.PizzaApi.Entities.Pizza;
 import com.PizzaApi.servises.PizzaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/pizzas")
+@RequestMapping("/admin/pizza")
 @PreAuthorize("hasAuthority('user:edit&read')")
 public class AdminPizzaController {
 
@@ -16,7 +17,8 @@ public class AdminPizzaController {
     @PostMapping
     public ResponseEntity<?> addPizza(@RequestBody Pizza pizza) {
         return pizzaService.savePizza(pizza) ? ResponseEntity.ok("Saved") :
-                ResponseEntity.badRequest().body("Insufficient data OR pizza already exists");
+                new ResponseEntity<>("Insufficient data OR pizza already exists" +
+                        "\nExpected: title, price, size, dough.", HttpStatus.EXPECTATION_FAILED);
     }
 
     @DeleteMapping("/{id}")

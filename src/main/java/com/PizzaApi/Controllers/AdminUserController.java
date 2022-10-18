@@ -1,31 +1,23 @@
 package com.PizzaApi.Controllers;
 
 import com.PizzaApi.servises.AdminService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/users")
+@RequestMapping("/admin/user")
 @PreAuthorize("hasAuthority('user:edit&read')")
 public class AdminUserController {
 
     private final AdminService userService;
 
     @GetMapping
-    public ResponseEntity<?> getUsers() {
-        return ResponseEntity.ok(userService.getUsers());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(userService.findUser(id));
-
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
+    public ResponseEntity<?> showUsers(@RequestParam(required = false,value = "id") Long[] ids) {
+        return ResponseEntity.ok(ids == null ?
+                userService.getUsers(): userService.findUsers(ids));
     }
 
     @PutMapping("/ban/{id}")
@@ -35,7 +27,7 @@ public class AdminUserController {
             return ResponseEntity.ok("Saved");
 
         } catch (UsernameNotFoundException e) {
-            return ResponseEntity.badRequest().body("User not found");
+            return new ResponseEntity<>("No data found", HttpStatus.FORBIDDEN);
         }
     }
 
@@ -46,7 +38,7 @@ public class AdminUserController {
             return ResponseEntity.ok("Saved");
 
         } catch (UsernameNotFoundException e) {
-            return ResponseEntity.badRequest().body("User not found");
+            return new ResponseEntity<>("No data found", HttpStatus.FORBIDDEN);
         }
     }
 

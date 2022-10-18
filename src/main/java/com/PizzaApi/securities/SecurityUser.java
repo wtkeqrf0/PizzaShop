@@ -15,13 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityUser implements UserDetails {
 
-    private final String username;
+    private final String phoneNumber;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
     private final boolean isActive;
 
     public static UserDetails fromUser(User user) {
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getPhoneNumber(), user.getPassword(),
                 user.getStatus().equals(Status.ACTIVE), user.getStatus().equals(Status.ACTIVE),
                 user.getStatus().equals(Status.ACTIVE), user.getStatus().equals(Status.ACTIVE),
                 user.getRole().getAuthorities());
@@ -39,7 +39,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return phoneNumber;
     }
 
     @Override

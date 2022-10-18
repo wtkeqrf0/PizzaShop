@@ -1,0 +1,16 @@
+version: '3 '
+
+services:
+  postgers:
+    image: 'postgres'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=Ubythfkbcbvec2'
+      - 'POSTGRES_DB=pizzaapi'
+
+  pizza-api:
+    build: ./
+    ports:
+      - "5432:5432"
+    depends_on:
+      - postgers
